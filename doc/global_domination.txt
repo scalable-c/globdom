@@ -1,0 +1,25 @@
+Name(7)
+=======
+
+
+NAME
+----
+global_domination - Project
+
+
+SYNOPSIS
+--------
+----
+#include <global_domination.h>
+
+cc ['flags'] 'files' -lgdom ['libraries']
+----
+
+
+DESCRIPTION
+-----------
+
+Classes
+~~~~~~~
+
+Something.

@@ -1,0 +1,7 @@
+<project
+    name = "Global Domination"
+    script = "zproject.gsl"
+    prefix = "gdom">
+    <use project = "czmq" />
+    <class name = "gdom_server" />
+</project>

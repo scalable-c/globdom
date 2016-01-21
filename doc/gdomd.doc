@@ -1,0 +1,14 @@
+#### gdomd - Global Domination Demon
+
+gdomd - Global Domination Demon
+
+Please add @discuss section in ../src/gdomd.c.
+
+This is the class interface:
+
+Please add @interface section in ../src/gdomd.c.
+
+This is the class self test code:
+
+Please add @selftest section in ../src/gdomd.c.
+

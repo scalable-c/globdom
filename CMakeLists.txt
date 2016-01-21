@@ -20,27 +20,27 @@ foreach(which MAJOR MINOR PATCH)
     file(
         STRINGS
         "${SOURCE_DIR}/include/gdom_library.h"
-        GLOBAL_DOMINATION_VERSION_STRING REGEX
-        "#define GLOBAL_DOMINATION_VERSION_${which}"
+        GDOM_VERSION_STRING REGEX
+        "#define GDOM_VERSION_${which}"
     )
     string(
         REGEX MATCH
-        "#define GLOBAL_DOMINATION_VERSION_${which} ([0-9_]+)"
+        "#define GDOM_VERSION_${which} ([0-9_]+)"
         GLOBAL_DOMINATION_REGEX_MATCH
-        "${GLOBAL_DOMINATION_VERSION_STRING}"
+        "${GDOM_VERSION_STRING}"
     )
     if (NOT GLOBAL_DOMINATION_REGEX_MATCH)
         message(
             FATAL_ERROR
-            "failed to parse GLOBAL_DOMINATION_VERSION_${which} from global_domination.h"
+            "failed to parse GDOM_VERSION_${which} from globaldom.h"
         )
     endif()
-    set(GLOBAL_DOMINATION_${which}_VERSION ${CMAKE_MATCH_1})
+    set(GDOM_${which}_VERSION ${CMAKE_MATCH_1})
 endforeach(which)
 
 set(
-    GLOBAL_DOMINATION_VERSION
-    ${GLOBAL_DOMINATION_MAJOR_VERSION}.${GLOBAL_DOMINATION_MINOR_VERSION}.${GLOBAL_DOMINATION_PATCH_VERSION}
+    GDOM_VERSION
+    ${GDOM_MAJOR_VERSION}.${GDOM_MINOR_VERSION}.${GDOM_PATCH_VERSION}
 )
 
 ########################################################################
@@ -146,12 +146,13 @@ ENDIF (CZMQ_FOUND)
 ########################################################################
 set (global_domination_headers
     include/gdom_library.h
-    include/global_domination.h
+    include/globaldom.h
 )
 
 IF (WITH_DRAFTS)
 list(APPEND global domination_headers
     include/gdom_server.h
+    include/gdom_client.h
 )
 ENDIF (WITH_DRAFTS)
 
@@ -168,6 +169,7 @@ set (gdom_sources
 IF (WITH_DRAFTS)
 list(APPEND gdom_sources
     src/gdom_server.c
+    src/gdom_client.c
 )
 ENDIF (WITH_DRAFTS)
 
@@ -195,11 +197,16 @@ install(TARGETS gdom
 ########################################################################
 # pkgconfig
 ########################################################################
-set(VERSION "${GLOBAL_DOMINATION_VERSION}")
+set(VERSION "${GDOM_VERSION}")
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "\${prefix}")
 set(libdir "\${prefix}/lib${LIB_SUFFIX}")
 set(includedir "\${prefix}/include")
+IF (WITH_DRAFTS)
+set(pkg_config_defines "-DWITH_DRAFTS=1")
+ELSE (WITH_DRAFTS)
+set(pkg_config_defines "")
+ENDIF (WITH_DRAFTS)
 configure_file(
     "${SOURCE_DIR}/src/libgdom.pc.in"
     "${SOURCE_DIR}/src/libgdom.pc"
@@ -213,6 +220,21 @@ install(
 ########################################################################
 # executables
 ########################################################################
+add_executable(
+    gdomd
+    "${SOURCE_DIR}/src/gdomd.c"
+)
+target_link_libraries(
+    gdomd
+    gdom
+    ${LIBZMQ_LIBRARIES}
+    ${CZMQ_LIBRARIES}
+    ${OPTIONAL_LIBRARIES}
+)
+set_target_properties(
+    gdomd
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${SOURCE_DIR}/src"
+)
 add_executable(
     gdom_selftest
     "${SOURCE_DIR}/src/gdom_selftest.c"
@@ -241,6 +263,7 @@ set(TEST_CLASSES
 IF (WITH_DRAFTS)
 list(APPEND TEST_CLASSES
     gdom_server
+    gdom_client
 )
 ENDIF (WITH_DRAFTS)
 
@@ -259,7 +282,7 @@ endforeach(TEST_CLASS)
 ########################################################################
 # summary
 ########################################################################
-message(STATUS "version: ${GLOBAL_DOMINATION_VERSION}")
+message(STATUS "version: ${GDOM_VERSION}")
 message(STATUS "install: ${CMAKE_INSTALL_PREFIX}")
 
 ################################################################################

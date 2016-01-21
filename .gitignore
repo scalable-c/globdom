@@ -19,6 +19,7 @@
 
 # Executables
 src/global domination_selftest
+src/gdomd
 src/gdom_selftest
 *.exe
 *.out

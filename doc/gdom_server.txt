@@ -1,0 +1,38 @@
+gdom_server(3)
+==============
+
+NAME
+----
+gdom_server - Global Domination service
+
+SYNOPSIS
+--------
+----
+//  Create a new global domination service.
+gdom_server_t *
+    gdom_server_new (void);
+
+//  Destroy a global domination service.
+void
+    gdom_server_destroy (gdom_server_t **self_p);
+
+//  Self test of this class
+void
+    gdom_server_test (bool verbose);
+----
+
+DESCRIPTION
+-----------
+
+This class aims for Global Domination. At present it does nothing.
+
+Global Domination may take a while. We will work on the basis of
+pull requests.
+
+EXAMPLE
+-------
+.From gdom_server_test method
+----
+gdom_server_t *server = gdom_server_new ();
+gdom_server_destroy (&server);
+----

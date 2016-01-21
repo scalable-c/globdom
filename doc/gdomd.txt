@@ -1,0 +1,26 @@
+gdomd(1)
+========
+
+NAME
+----
+gdomd - Global Domination Demon
+
+SYNOPSIS
+--------
+----
+Please add @interface section in ../src/gdomd.c.
+----
+
+DESCRIPTION
+-----------
+
+gdomd - Global Domination Demon
+
+Please add @discuss section in ../src/gdomd.c.
+
+EXAMPLE
+-------
+.From gdomd_test method
+----
+Please add @selftest section in ../src/gdomd.c.
+----

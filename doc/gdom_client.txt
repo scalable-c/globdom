@@ -1,0 +1,45 @@
+gdom_client(3)
+==============
+
+NAME
+----
+gdom_client - description
+
+SYNOPSIS
+--------
+Something
+
+----
+//  Create a new gdom_client
+GDOM_EXPORT gdom_client_t *
+    gdom_client_new (void);
+
+//  Destroy the gdom_client
+GDOM_EXPORT void
+    gdom_client_destroy (gdom_client_t **self_p);
+
+//  Print properties of object
+GDOM_EXPORT void
+    gdom_client_print (gdom_client_t *self);
+
+//  Self test of this class
+GDOM_EXPORT void
+    gdom_client_test (bool verbose);
+----
+
+DESCRIPTION
+-----------
+
+gdom_client - 
+
+Please add @discuss section in ../src/gdom_client.c.
+
+EXAMPLE
+-------
+.From gdom_client_test method
+----
+//  Simple create/destroy test
+gdom_client_t *self = gdom_client_new ();
+assert (self);
+gdom_client_destroy (&self);
+----

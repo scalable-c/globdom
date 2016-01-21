@@ -1,0 +1,26 @@
+#### gdom_server - Global Domination service
+
+This class aims for Global Domination. At present it does nothing.
+
+Global Domination may take a while. We will work on the basis of
+pull requests.
+
+This is the class interface:
+
+    //  Create a new global domination service.
+    gdom_server_t *
+        gdom_server_new (void);
+    
+    //  Destroy a global domination service.
+    void
+        gdom_server_destroy (gdom_server_t **self_p);
+    
+    //  Self test of this class
+    void
+        gdom_server_test (bool verbose);
+
+This is the class self test code:
+
+    gdom_server_t *server = gdom_server_new ();
+    gdom_server_destroy (&server);
+

@@ -7,11 +7,11 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
 #
-# The version number is extracted from include/global_domination.h using
+# The version number is extracted from include/globaldom.h using
 # the version.sh script. Hence, it should be updated there.
 # The version in git should reflect the *next* version planned.
 #
-AC_INIT([global domination],[m4_esyscmd([./version.sh global_domination.h])],[email@hostname.com])
+AC_INIT([global domination],[m4_esyscmd([./version.sh globaldom.h])],[email@hostname.com])
 
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -40,7 +40,7 @@ AC_SUBST(PACKAGE_VERSION)
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 #
 # libgdom -version-info
-LTVER="0:0:0"
+LTVER="0:2:0"
 AC_SUBST(LTVER)
 
 # Capture c flags
@@ -220,6 +220,8 @@ LIBS="${PREVIOUS_LIBS}"
 global_domination_on_mingw32="no"
 global_domination_on_cygwin="no"
 global_domination_on_android="no"
+global_domination_on_linux="no"
+global_domination_on_gnu="no"
 
 # Host specific checks
 AC_CANONICAL_HOST
@@ -266,6 +268,7 @@ case "${host_os}" in
         # Define on Linux to enable all library features
         CPPFLAGS="-D_GNU_SOURCE -DLINUX $CPPFLAGS"
         AC_DEFINE(GLOBAL_DOMINATION_HAVE_LINUX, 1, [Have Linux OS])
+        global_domination_on_linux="yes"
 
         case "${host_os}" in
             *android*)
@@ -324,6 +327,14 @@ case "${host_os}" in
         AC_DEFINE(GLOBAL_DOMINATION_HAVE_CYGWIN, 1, [Have Cygwin])
         global_domination_on_cygwin="yes"
         ;;
+    gnu*)
+        # Define on GNU/Hurd to enable all library features
+        if test "x$GXX" = "xyes"; then
+            CPPFLAGS="-D_GNU_SOURCE $CPPFLAGS"
+        fi
+        AC_DEFINE(GLOBAL_DOMINATION_HAVE_GNU, 1, [Have GNU/Hurd OS])
+        global_domination_on_gnu="yes"
+        ;;
     *)
         AC_MSG_ERROR([unsupported system: ${host_os}.])
         ;;
@@ -362,8 +373,20 @@ AM_CONDITIONAL(ENABLE_SHARED, test "x$enable_shared" = "xyes")
 AM_CONDITIONAL(ON_MINGW, test "x$global_domination_on_mingw32" = "xyes")
 AM_CONDITIONAL(ON_CYGWIN, test "x$global_domination_on_cygwin" = "xyes")
 AM_CONDITIONAL(ON_ANDROID, test "x$global_domination_on_android" = "xyes")
+AM_CONDITIONAL(ON_LINUX, test "x$global_domination_on_linux" = "xyes")
+AM_CONDITIONAL(ON_GNU, test "x$global_domination_on_gnu" = "xyes")
 AM_CONDITIONAL(INSTALL_MAN, test "x$global_domination_install_man" = "xyes")
 AM_CONDITIONAL(BUILD_DOC, test "x$global_domination_build_doc" = "xyes")
+
+# Check for gdomd intent
+AC_ARG_WITH([gdomd],
+    AS_HELP_STRING([--with-gdomd],
+        [Compile and install the gdomd program [default=yes].]),
+    [with_gdomd=$withval],
+    [with_gdomd=yes])
+
+AM_CONDITIONAL([WITH_GDOMD], [test x$with_gdomd != xno])
+AM_COND_IF([WITH_GDOMD], [AC_MSG_NOTICE([WITH_GDOMD defined])])
 
 # Check for gdom_selftest intent
 AC_ARG_WITH([gdom_selftest],
@@ -400,9 +423,14 @@ AM_COND_IF([WITH_SYSTEMD],
         [AC_MSG_ERROR([Cannot find required package for systemd. Note, pkg-config is required due to specified version >= 200])])],
     [])
 
-# enable draft API by default if we're in a git repository
-# else disable it by default; then allow --with-draft=yes/no override
-AC_CHECK_FILE(.git, [gitmaster=yes], [gitmaster=no])
+if test "x$cross_compiling" = "xyes"; then
+    #   Enable draft by default when cross-compiling
+    gitmaster=yes
+else
+    # enable draft API by default if we're in a git repository
+    # else disable it by default; then allow --with-draft=yes/no override
+    AC_CHECK_FILE(.git, [gitmaster=yes], [gitmaster=no])
+fi
 
 AC_ARG_WITH([drafts],
     AS_HELP_STRING([--with-drafts],
@@ -415,8 +443,10 @@ AM_CONDITIONAL([WITH_DRAFTS], [test x$with_drafts != xno])
 if test "x$with_drafts" = "xyes"; then
     AC_MSG_NOTICE([building draft, stable, and legacy API])
     AC_DEFINE(WITH_DRAFTS, 1, [Build and install draft classes and methods.])
+    AC_SUBST(pkg_config_defines, "-DWITH_DRAFTS=1")
 else
     AC_MSG_NOTICE([building stable and legacy API (no drafts)])
+    AC_SUBST(pkg_config_defines, "")
 fi
 
 # Specify output files

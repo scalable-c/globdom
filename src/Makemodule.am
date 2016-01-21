@@ -13,12 +13,13 @@ lib_LTLIBRARIES += src/libgdom.la
 pkgconfig_DATA = src/libgdom.pc
 
 include_HEADERS = \
-    include/global_domination.h \
+    include/globaldom.h \
     include/gdom_library.h
 
 if WITH_DRAFTS
 include_HEADERS += \
-    include/gdom_server.h
+    include/gdom_server.h \
+    include/gdom_client.h
 endif
 
 src_libgdom_la_SOURCES = \
@@ -26,7 +27,8 @@ src_libgdom_la_SOURCES = \
 
 if WITH_DRAFTS
 src_libgdom_la_SOURCES += \
-    src/gdom_server.c
+    src/gdom_server.c \
+    src/gdom_client.c
 endif
 
 src_libgdom_la_CPPFLAGS = ${AM_CPPFLAGS}
@@ -49,6 +51,15 @@ endif
 
 src_libgdom_la_LIBADD = ${project_libs}
 
+if WITH_GDOMD
+bin_PROGRAMS += src/gdomd
+src_gdomd_CPPFLAGS = ${AM_CPPFLAGS}
+src_gdomd_LDADD = ${program_libs}
+src_gdomd_SOURCES = src/gdomd.c
+if WITH_SYSTEMD
+endif #WITH_SYSTEMD
+
+endif #WITH_GDOMD
 if WITH_GDOM_SELFTEST
 check_PROGRAMS += src/gdom_selftest
 noinst_PROGRAMS += src/gdom_selftest
@@ -63,6 +74,7 @@ endif #WITH_GDOM_SELFTEST
 
 # define custom target for all products of /src
 src:
+	src/gdomd \
 	src/gdom_selftest \
 	src/libgdom.la
 

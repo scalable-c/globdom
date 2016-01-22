@@ -4,7 +4,7 @@
     prefix = "gdom"
     header = "globaldom.h"
     >
-    <version major = "0" minor = "2" />
+    <version major = "0" minor = "3" />
     <include filename = "license.xml" />
     <use project = "czmq" />
 

@@ -40,7 +40,7 @@ AC_SUBST(PACKAGE_VERSION)
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 #
 # libgdom -version-info
-LTVER="0:2:0"
+LTVER="0:3:0"
 AC_SUBST(LTVER)
 
 # Capture c flags

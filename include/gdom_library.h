@@ -26,7 +26,7 @@
 //  GDOM version macros for compile-time API detection
 
 #define GDOM_VERSION_MAJOR 0
-#define GDOM_VERSION_MINOR 2
+#define GDOM_VERSION_MINOR 3
 #define GDOM_VERSION_PATCH 0
 
 #define GDOM_MAKE_VERSION(major, minor, patch) \

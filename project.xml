@@ -7,6 +7,7 @@
     <version major = "0" minor = "2" />
     <include filename = "license.xml" />
     <use project = "czmq" />
+    <target name = "travis" />
     <class name = "gdom_server" />
     <class name = "gdom_client" />
     <main name = "gdomd">Global Domination Demon</main>

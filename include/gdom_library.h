@@ -47,22 +47,21 @@
 #endif
 
 //  Opaque class structures to allow forward references
-
-//  Draft APIs, excluded by default in stable releases
-#ifdef WITH_DRAFTS
+//  These classes are stable or legacy and built in all releases
+//  Draft classes are by default not built stable releases
+#ifdef GDOM_BUILD_DRAFT_API
 typedef struct _gdom_server_t gdom_server_t;
 #define GDOM_SERVER_T_DEFINED
 typedef struct _gdom_client_t gdom_client_t;
 #define GDOM_CLIENT_T_DEFINED
-#endif // WITH_DRAFTS
+#endif // GDOM_BUILD_DRAFT_API
 
-//  Public API classes
 
-//  Draft APIs, excluded by default in stable releases
-#ifdef WITH_DRAFTS
+//  Public classes, each with its own header file
+#ifdef GDOM_BUILD_DRAFT_API
 #include "gdom_server.h"
 #include "gdom_client.h"
-#endif // WITH_DRAFTS
+#endif // GDOM_BUILD_DRAFT_API
 
 #endif
 /*

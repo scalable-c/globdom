@@ -7,11 +7,7 @@
 # Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.61)
 #
-# The version number is extracted from include/globaldom.h using
-# the version.sh script. Hence, it should be updated there.
-# The version in git should reflect the *next* version planned.
-#
-AC_INIT([global domination],[m4_esyscmd([./version.sh globaldom.h])],[email@hostname.com])
+AC_INIT([global domination],[0.3.0],[email@hostname.com])
 
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR(config)
@@ -24,11 +20,11 @@ PV_MAJOR=`echo $PACKAGE_VERSION | cut -d . -f 1`
 PV_MINOR=`echo $PACKAGE_VERSION | cut -d . -f 2`
 PV_PATCH=`echo $PACKAGE_VERSION | cut -d . -f 3`
 AC_DEFINE_UNQUOTED([PACKAGE_VERSION_MAJOR],[$PV_MAJOR],
-    [GLOBAL_DOMINATION major version])
+    [GDOM major version])
 AC_DEFINE_UNQUOTED([PACKAGE_VERSION_MINOR],[$PV_MINOR],
-    [GLOBAL_DOMINATION minor version])
+    [GDOM minor version])
 AC_DEFINE_UNQUOTED([PACKAGE_VERSION_PATCH],[$PV_PATCH],
-    [GLOBAL_DOMINATION patchlevel])
+    [GDOM patchlevel])
 # This lets us use PACKAGE_VERSION in Makefiles
 AC_SUBST(PACKAGE_VERSION)
 
@@ -44,7 +40,7 @@ LTVER="0:3:0"
 AC_SUBST(LTVER)
 
 # Capture c flags
-GLOBAL_DOMINATION_ORIG_CFLAGS="${CFLAGS:-none}"
+GDOM_ORIG_CFLAGS="${CFLAGS:-none}"
 
 # Checks for programs
 AC_PROG_CC
@@ -59,13 +55,13 @@ PKG_PROG_PKG_CONFIG
 # Code coverage
 AC_ARG_WITH(gcov, [AS_HELP_STRING([--with-gcov=yes/no],
                   [With GCC Code Coverage reporting.])],
-                  [GLOBAL_DOMINATION_GCOV="$withval"])
+                  [GDOM_GCOV="$withval"])
 
-if test "x${GLOBAL_DOMINATION_GCOV}" == "xyes"; then
+if test "x${GDOM_GCOV}" == "xyes"; then
     CFLAGS="-O0 -g -fprofile-arcs -ftest-coverage"
 
-    if test "x${GLOBAL_DOMINATION_ORIG_CFLAGS}" != "xnone"; then
-        CFLAGS="${CFLAGS} ${GLOBAL_DOMINATION_ORIG_CFLAGS}"
+    if test "x${GDOM_ORIG_CFLAGS}" != "xnone"; then
+        CFLAGS="${CFLAGS} ${GDOM_ORIG_CFLAGS}"
     fi
     AM_CONDITIONAL(WITH_GCOV, true)
 else
@@ -267,12 +263,12 @@ case "${host_os}" in
     *linux*)
         # Define on Linux to enable all library features
         CPPFLAGS="-D_GNU_SOURCE -DLINUX $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_LINUX, 1, [Have Linux OS])
+        AC_DEFINE(GDOM_HAVE_LINUX, 1, [Have Linux OS])
         global_domination_on_linux="yes"
 
         case "${host_os}" in
             *android*)
-                AC_DEFINE(GLOBAL_DOMINATION_HAVE_ANDROID, 1, [Have Android OS])
+                AC_DEFINE(GDOM_HAVE_ANDROID, 1, [Have Android OS])
                 global_domination_on_android="yes"
             ;;
         esac
@@ -280,43 +276,43 @@ case "${host_os}" in
     *solaris*)
         # Define on Solaris to enable all library features
         CPPFLAGS="-D_PTHREADS $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_SOLARIS, 1, [Have Solaris OS])
+        AC_DEFINE(GDOM_HAVE_SOLARIS, 1, [Have Solaris OS])
         CFLAGS="${CFLAGS} -lsocket -lssp"
         ;;
     *freebsd*)
         # Define on FreeBSD to enable all library features
         CPPFLAGS="-D__BSD_VISIBLE $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_FREEBSD, 1, [Have FreeBSD OS])
+        AC_DEFINE(GDOM_HAVE_FREEBSD, 1, [Have FreeBSD OS])
         ;;
     *darwin*)
         # Define on Darwin to enable all library features
         CPPFLAGS="-D_DARWIN_C_SOURCE $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_OSX, 1, [Have DarwinOSX OS])
+        AC_DEFINE(GDOM_HAVE_OSX, 1, [Have DarwinOSX OS])
         ;;
     *netbsd*)
         # Define on NetBSD to enable all library features
         CPPFLAGS="-D_NETBSD_SOURCE $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_NETBSD, 1, [Have NetBSD OS])
+        AC_DEFINE(GDOM_HAVE_NETBSD, 1, [Have NetBSD OS])
         ;;
     *openbsd*)
         # Define on OpenBSD to enable all library features
         CPPFLAGS="-D_BSD_SOURCE $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_OPENBSD, 1, [Have OpenBSD OS])
+        AC_DEFINE(GDOM_HAVE_OPENBSD, 1, [Have OpenBSD OS])
         ;;
     *nto-qnx*)
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_QNXNTO, 1, [Have QNX Neutrino OS])
+        AC_DEFINE(GDOM_HAVE_QNXNTO, 1, [Have QNX Neutrino OS])
         ;;
     *aix*)
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_AIX, 1, [Have AIX OS])
+        AC_DEFINE(GDOM_HAVE_AIX, 1, [Have AIX OS])
         ;;
     *hpux*)
         # Define on HP-UX to enable all library features
         CPPFLAGS="-D_POSIX_C_SOURCE=200112L"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_HPUX, 1, [Have HPUX OS])
+        AC_DEFINE(GDOM_HAVE_HPUX, 1, [Have HPUX OS])
         ;;
     *mingw32*)
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_WINDOWS, 1, [Have Windows OS])
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_MINGW32, 1, [Have MinGW32])
+        AC_DEFINE(GDOM_HAVE_WINDOWS, 1, [Have Windows OS])
+        AC_DEFINE(GDOM_HAVE_MINGW32, 1, [Have MinGW32])
         AC_CHECK_HEADERS(windows.h)
         global_domination_on_mingw32="yes"
         global_domination_install_man="no"
@@ -324,7 +320,7 @@ case "${host_os}" in
     *cygwin*)
         # Define on Cygwin to enable all library features
         CPPFLAGS="-D_GNU_SOURCE $CPPFLAGS"
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_CYGWIN, 1, [Have Cygwin])
+        AC_DEFINE(GDOM_HAVE_CYGWIN, 1, [Have Cygwin])
         global_domination_on_cygwin="yes"
         ;;
     gnu*)
@@ -332,7 +328,7 @@ case "${host_os}" in
         if test "x$GXX" = "xyes"; then
             CPPFLAGS="-D_GNU_SOURCE $CPPFLAGS"
         fi
-        AC_DEFINE(GLOBAL_DOMINATION_HAVE_GNU, 1, [Have GNU/Hurd OS])
+        AC_DEFINE(GDOM_HAVE_GNU, 1, [Have GNU/Hurd OS])
         global_domination_on_gnu="yes"
         ;;
     *)
@@ -379,24 +375,24 @@ AM_CONDITIONAL(INSTALL_MAN, test "x$global_domination_install_man" = "xyes")
 AM_CONDITIONAL(BUILD_DOC, test "x$global_domination_build_doc" = "xyes")
 
 # Check for gdomd intent
-AC_ARG_WITH([gdomd],
-    AS_HELP_STRING([--with-gdomd],
-        [Compile and install the gdomd program [default=yes].]),
-    [with_gdomd=$withval],
-    [with_gdomd=yes])
+AC_ARG_ENABLE([gdomd],
+    AS_HELP_STRING([--enable-gdomd],
+        [Compile and install 'gdomd' [default=yes].]),
+    [enable_gdomd=$enableval],
+    [enable_gdomd=yes])
 
-AM_CONDITIONAL([WITH_GDOMD], [test x$with_gdomd != xno])
-AM_COND_IF([WITH_GDOMD], [AC_MSG_NOTICE([WITH_GDOMD defined])])
+AM_CONDITIONAL([ENABLE_GDOMD], [test x$enable_gdomd != xno])
+AM_COND_IF([ENABLE_GDOMD], [AC_MSG_NOTICE([ENABLE_GDOMD defined])])
 
 # Check for gdom_selftest intent
-AC_ARG_WITH([gdom_selftest],
-    AS_HELP_STRING([--with-gdom_selftest],
-        [Compile the gdom_selftest program [default=yes].]),
-    [with_gdom_selftest=$withval],
-    [with_gdom_selftest=yes])
+AC_ARG_ENABLE([gdom_selftest],
+    AS_HELP_STRING([--enable-gdom_selftest],
+        [Compile 'gdom_selftest' in src [default=yes].]),
+    [enable_gdom_selftest=$enableval],
+    [enable_gdom_selftest=yes])
 
-AM_CONDITIONAL([WITH_GDOM_SELFTEST], [test x$with_gdom_selftest != xno])
-AM_COND_IF([WITH_GDOM_SELFTEST], [AC_MSG_NOTICE([WITH_GDOM_SELFTEST defined])])
+AM_CONDITIONAL([ENABLE_GDOM_SELFTEST], [test x$enable_gdom_selftest != xno])
+AM_COND_IF([ENABLE_GDOM_SELFTEST], [AC_MSG_NOTICE([ENABLE_GDOM_SELFTEST defined])])
 
 # Checks for library functions.
 AC_TYPE_SIGNAL
@@ -428,24 +424,24 @@ if test "x$cross_compiling" = "xyes"; then
     gitmaster=yes
 else
     # enable draft API by default if we're in a git repository
-    # else disable it by default; then allow --with-draft=yes/no override
+    # else disable it by default; then allow --enable-drafts=yes/no override
     AC_CHECK_FILE(.git, [gitmaster=yes], [gitmaster=no])
 fi
 
-AC_ARG_WITH([drafts],
-    AS_HELP_STRING([--with-drafts],
+AC_ARG_ENABLE([drafts],
+    AS_HELP_STRING([--enable-drafts],
         [Build and install draft classes and methods [default=yes.]]),
-    [with_drafts=$withval],
-    [with_drafts=$gitmaster])
+    [enable_drafts=$withval],
+    [enable_drafts=$gitmaster])
 
-AM_CONDITIONAL([WITH_DRAFTS], [test x$with_drafts != xno])
+AM_CONDITIONAL([ENABLE_DRAFTS], [test x$enable_drafts != xno])
 
-if test "x$with_drafts" = "xyes"; then
-    AC_MSG_NOTICE([building draft, stable, and legacy API])
-    AC_DEFINE(WITH_DRAFTS, 1, [Build and install draft classes and methods.])
-    AC_SUBST(pkg_config_defines, "-DWITH_DRAFTS=1")
+if test "x$enable_drafts" = "xyes"; then
+    AC_MSG_NOTICE([Building stable and legacy API + draft API])
+    AC_DEFINE(GDOM_BUILD_DRAFT_API, 1, [Provide draft classes and methods.])
+    AC_SUBST(pkg_config_defines, "-DGDOM_BUILD_DRAFT_API=1")
 else
-    AC_MSG_NOTICE([building stable and legacy API (no drafts)])
+    AC_MSG_NOTICE([Building stable and legacy API (no draft API)])
     AC_SUBST(pkg_config_defines, "")
 fi
 

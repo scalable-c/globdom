@@ -27,10 +27,10 @@ typedef struct {
 
 static test_item_t
 all_tests [] = {
-#ifdef WITH_DRAFTS
+#ifdef GDOM_BUILD_DRAFT_API
     { "gdom_server", gdom_server_test },
     { "gdom_client", gdom_client_test },
-#endif // WITH_DRAFTS
+#endif // GDOM_BUILD_DRAFT_API
     {0, 0}          //  Sentinel
 };
 

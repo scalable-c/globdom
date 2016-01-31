@@ -11,6 +11,7 @@
     <target name = "travis" />
     <target name = "vs2010" />
     <target name = "vs2015" />
+    <target name = "java" />
 
     <class name = "gdom_server" />
     <class name = "gdom_client" />

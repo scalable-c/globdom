@@ -1,0 +1,9 @@
+<class name = "gdom_client">
+    Global Domination client API
+    <constructor>
+        Create a new Global Domination client
+    </constructor>
+    <destructor>
+        Destroy a Global Domination client
+    </destructor>
+</class>

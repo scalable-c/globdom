@@ -27,10 +27,9 @@ noinst_LTLIBRARIES =
 TESTS =
 
 EXTRA_DIST = \
-    src/gdom_classes.h \
     LICENSE \
     README.md \
-    version.sh
+    src/gdom_classes.h
 
 include $(srcdir)/src/Makemodule.am
 

@@ -3,12 +3,10 @@ gdom_client(3)
 
 NAME
 ----
-gdom_client - description
+gdom_client - class description
 
 SYNOPSIS
 --------
-Something
-
 ----
 //  Create a new gdom_client
 GDOM_EXPORT gdom_client_t *
@@ -17,10 +15,6 @@ GDOM_EXPORT gdom_client_t *
 //  Destroy the gdom_client
 GDOM_EXPORT void
     gdom_client_destroy (gdom_client_t **self_p);
-
-//  Print properties of object
-GDOM_EXPORT void
-    gdom_client_print (gdom_client_t *self);
 
 //  Self test of this class
 GDOM_EXPORT void

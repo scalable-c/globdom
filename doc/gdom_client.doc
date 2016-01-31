@@ -1,4 +1,4 @@
-#### gdom_client - 
+#### gdom_client - class description
 
 gdom_client - 
 
@@ -13,10 +13,6 @@ This is the class interface:
     //  Destroy the gdom_client
     GDOM_EXPORT void
         gdom_client_destroy (gdom_client_t **self_p);
-    
-    //  Print properties of object
-    GDOM_EXPORT void
-        gdom_client_print (gdom_client_t *self);
     
     //  Self test of this class
     GDOM_EXPORT void

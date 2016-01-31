@@ -16,19 +16,20 @@ include_HEADERS = \
     include/globaldom.h \
     include/gdom_library.h
 
-if WITH_DRAFTS
+if ENABLE_DRAFTS
 include_HEADERS += \
     include/gdom_server.h \
     include/gdom_client.h
-endif
 
+endif
 src_libgdom_la_SOURCES = \
     src/platform.h
 
-if WITH_DRAFTS
+if ENABLE_DRAFTS
 src_libgdom_la_SOURCES += \
     src/gdom_server.c \
     src/gdom_client.c
+
 endif
 
 src_libgdom_la_CPPFLAGS = ${AM_CPPFLAGS}
@@ -51,32 +52,33 @@ endif
 
 src_libgdom_la_LIBADD = ${project_libs}
 
-if WITH_GDOMD
+if ENABLE_GDOMD
 bin_PROGRAMS += src/gdomd
 src_gdomd_CPPFLAGS = ${AM_CPPFLAGS}
 src_gdomd_LDADD = ${program_libs}
 src_gdomd_SOURCES = src/gdomd.c
-if WITH_SYSTEMD
-endif #WITH_SYSTEMD
+endif #ENABLE_GDOMD
 
-endif #WITH_GDOMD
-if WITH_GDOM_SELFTEST
+if ENABLE_GDOM_SELFTEST
 check_PROGRAMS += src/gdom_selftest
 noinst_PROGRAMS += src/gdom_selftest
 src_gdom_selftest_CPPFLAGS = ${AM_CPPFLAGS}
 src_gdom_selftest_LDADD = ${program_libs}
 src_gdom_selftest_SOURCES = src/gdom_selftest.c
-if WITH_SYSTEMD
-endif #WITH_SYSTEMD
+endif #ENABLE_GDOM_SELFTEST
 
-endif #WITH_GDOM_SELFTEST
-
+# Install api files into /usr/local/share/zproject
+apidir = @datadir@/zproject/global domination
+dist_api_DATA = \
+    api/gdom_client.api
 
 # define custom target for all products of /src
 src:
 	src/gdomd \
 	src/gdom_selftest \
 	src/libgdom.la
+
+	gsl -target:- project.xml
 
 check-local: src/gdom_selftest
 	$(LIBTOOL) --mode=execute $(srcdir)/src/gdom_selftest
